@@ -9,10 +9,7 @@ class Core:
 
     def execute_user_request(self, user_request: str):
         try:
-            fn = self.llm.get_function_call(user_request)
-            fn_call_count = 0
-            while fn_call_count < self.max_fn_calls and self.interpreter.process_function(fn):
-                fn = self.llm.get_function_call(self.interpreter.context)
-                fn_call_count += 1
+            fns = self.llm.get_function_calls(user_request)
+            self.interpreter.process_function(fns)
         except Exception as e:
             print(f"Error executing request: {e}")
