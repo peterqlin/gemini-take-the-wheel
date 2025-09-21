@@ -1,0 +1,13 @@
+[project]
+name = "gemini_take_the_wheel"
+version = "0.1.0"
+description = "Let Gemini control your computer"
+authors = [{ name = "Peter Lin", email = "peter.lin2305@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    "google-genai>=1.38.0",
+    "load-dotenv>=0.1.0",
+    "pyautogui>=0.9.54",
+]
