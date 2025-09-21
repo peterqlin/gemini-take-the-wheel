@@ -7,20 +7,32 @@ def open_app(app_name: str, **kwargs):
     pyautogui.write(app_name, interval=0.25)
     pyautogui.press("enter")
 
+def write_text(text: str, enter: bool, **kwargs) -> None:
+    print(f"Writing {text}{enter and " and hitting enter"}...")
+    pyautogui.write(text, interval=0.25)
+    if enter:
+        pyautogui.press("enter")
+
 functions = {
-    "open_app": open_app
+    "open_app": open_app,
+    "write_text": write_text,
 }
 
 class Interpreter:
     def __init__(self):
-        self.context = ""
+        self.history = ""
+    
+    def append_history(self, history):
+        self.history += history
 
     def process_function(self, fn: dict) -> bool:
         try:
             name, args = fn["name"], fn["args"]
-            print(f"[DEBUG] Gemini wants to call {name} with args {args}")
+            # print(f"[DEBUG] Gemini wants to call {name} with args {args}")
+            print("➡️\t", end="")
             functions[name](**args)
-            self.context = args["context"]
+            self.history += f"{args["next_steps"]}"
+            print(f"Current history: {self.history}")
             print("[DEBUG] Command executed successfully")
             return args["continue"]
         except Exception as e:

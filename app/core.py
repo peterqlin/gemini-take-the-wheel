@@ -11,8 +11,9 @@ class Core:
         try:
             fn = self.llm.get_function_call(user_request)
             fn_call_count = 0
+            self.interpreter.append_history(f"Original objective: {user_request}. ")
             while fn_call_count < self.max_fn_calls and self.interpreter.process_function(fn):
-                fn = self.llm.get_function_call(self.interpreter.context)
+                fn = self.llm.get_function_call(self.interpreter.history)
                 fn_call_count += 1
         except Exception as e:
             print(f"Error executing request: {e}")
